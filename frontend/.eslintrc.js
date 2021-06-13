@@ -184,7 +184,9 @@ module.exports = {
         "nonblock-statement-body-position": "error",
         "object-curly-newline": [
             "error",
-            { "multiline": true }
+            {
+                "consistent": true
+            }
         ],
         "object-curly-spacing": [
             "error",
