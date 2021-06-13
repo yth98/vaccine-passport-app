@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<%- include('head') %>
+  <body>
+    <div class='container'>
+      <div class='row'>
+        <h1 class='text-center'>Logged in as <%- 'Alice' %></h1>
+        <div class='col-12 d-grid gap-3'>
+          <a href='/idv/query'><button class='btn btn-light w-100'>Query Vaccination Records</button></a>
+          <a href='/idv/gen-qr'><button class='btn btn-light w-100'>Generate QR code</button></a>
+          <a href='/logout'><button class='btn btn-dark w-100'>Logout</button></a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

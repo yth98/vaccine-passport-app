@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<%- include head %>
+  <body>
+    <div class='container'>
+      <div class='row'>
+        <h1 class='text-center'>Vaccination Authentication Service</h1>
+        <div class='col-12'>
+          <div class='card text-center border m-2'>
+            <i class='fs-1 p-3 fas fa-qrcode'></i>
+            <p class='fs-5'>Scan QR code</p>
+          </div>
+        </div>
+        <p class='text-center fs-4 mt-3'>or select your identity:</p>
+        <div class='col-md-6'>
+          <a href='/idv'>
+            <div class='card text-center border m-2'>
+              <i class='fs-1 p-3 fas fa-user'></i>
+              <p class='fs-5'>Individual</p>
+            </div>
+          </a>
+        </div>
+        <div class='col-md-6'>
+          <a href='/med'>
+            <div class='card text-center border m-2'>
+              <i class='fs-1 p-3 fas fa-hospital-alt'></i>
+              <p class='fs-5'>Health Facility</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
