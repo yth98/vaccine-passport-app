@@ -39,7 +39,8 @@ router.post('/scan', async function(req, res) {
           name: payload.name
         }
       })).data.data.Injection,
-      title: `Injection records of <strong>${payload.name}</strong>`
+      name: payload.name,
+      title: `Injection records of ${payload.name}`
     });
   } catch (err) {
     res.status(403).send('Invalid or expired token.');

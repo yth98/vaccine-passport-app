@@ -4,7 +4,7 @@
   <body>
     <div class='container'>
       <div class='row'>
-        <h1 class='text-center'><%- title %></h1>
+        <h1 class='text-center'>Injection records of <strong><%- name %></strong></h1>
 <% data.forEach((entry) => { -%>
         <div class='col-12 card py-2'>
           <div class='form-outline'>
@@ -12,15 +12,15 @@
             <label class='form-label' for='vaccine_name'>Type of Vaccine</label>
           </div>
           <div class='form-outline'>
-            <input type='datetime' id='date' class='form-control' readonly value='<%= entry.date %>' />
+            <input type='text' id='date' class='form-control' readonly value='<%= new Date(entry.date).toLocaleString() %>' />
             <label class='form-label' for='date'>Date of Injection</label>
           </div>
           <div class='form-outline'>
-            <input type='text' id='duration' class='form-control' readonly value='<%= entry.duration %>' />
+            <input type='number' id='duration' class='form-control' readonly value='<%= entry.duration %>' />
             <label class='form-label' for='duration'>Duration</label>
           </div>
           <div class='form-outline'>
-            <input type='text' id='count' class='form-control' readonly value='<%= entry.count %>' />
+            <input type='number' id='count' class='form-control' readonly value='<%= entry.count %>' />
             <label class='form-label' for='count'>Count</label>
           </div>
           <div class='form-outline'>

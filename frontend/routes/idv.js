@@ -24,7 +24,8 @@ router.get('/query', async function(req, res, next) {
       res.render('list', {
         data: userData.data.data.Injection,
         individual: true,
-        title: `Injection records of <strong>${req.session.idv.name}</strong>`
+        name: req.session.idv.name,
+        title: `Injection records of ${req.session.idv.name}`
       });
     } else {
       res.redirect(303, '/');

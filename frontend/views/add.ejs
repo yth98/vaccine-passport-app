@@ -7,39 +7,39 @@
         <h1 class='text-center'><%- title %></h1>
         <form action='./create' method='POST'>
           <div class='form-outline'>
-            <input type='text' id='usr_name' name='usr_name' class='form-control' />
+            <input type='text' id='usr_name' name='usr_name' class='form-control' required>
             <label class='form-label' for='usr_name'>Vaccinee's Name</label>
           </div>
           <div class='form-outline'>
-            <input type='text' id='id' name='id' class='form-control' />
+            <input type='text' id='id' name='id' class='form-control' required>
             <label class='form-label' for='id'>Vaccinee's Personal ID</label>
           </div>
           <div class='form-outline'>
-            <input type='text' id='vaccine_name' name='vaccine_name' class='form-control' />
+            <input type='text' id='vaccine_name' name='vaccine_name' class='form-control' required>
             <label class='form-label' for='vaccine_name'>Type of Vaccine</label>
           </div>
           <div class='form-outline'>
-            <input type='datetime' id='date' name='date' class='form-control' />
+            <input type='datetime-local' id='date' name='date' class='form-control' step='1' required value='<%= new Date(Date.now() + 28800000).toISOString().split('.')[0] %>'>
             <label class='form-label' for='date'>Date of Injection</label>
           </div>
           <div class='form-outline'>
-            <input type='datetime' id='duration' name='duration' class='form-control' />
+            <input type='number' id='duration' name='duration' class='form-control' required>
             <label class='form-label' for='duration'>Duration</label>
           </div>
           <div class='form-outline'>
-            <input type='datetime' id='count' name='count' class='form-control' />
+            <input type='number' id='count' name='count' class='form-control' required>
             <label class='form-label' for='count'>Count</label>
           </div>
           <div class='form-outline'>
-            <input type='datetime' id='doctor_name' name='doctor_name' class='form-control' />
+            <input type='text' id='doctor_name' name='doctor_name' class='form-control' required>
             <label class='form-label' for='doctor_name'>Name of Medical Personnel</label>
           </div>
           <div class='form-outline'>
-            <input type='text' id='hospital_name' class='form-control' readonly value='<%= fid %>' />
+            <input type='text' id='hospital_name' class='form-control' readonly value='<%= fid %>'>
             <label class='form-label' for='hospital_name'>Name of Medical Facility</label>
           </div>
           <div class='form-outline mt-3'>
-            <input type='submit' class='btn btn-dark w-100' value='Submit' />
+            <input type='submit' class='btn btn-dark w-100' value='Submit'>
           </div>
         </form>
         <div class='col-12 mt-4'>
