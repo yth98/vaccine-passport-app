@@ -71,7 +71,7 @@ router.put('/gen-qr', function(req, res) {
     const json = {
       expiry: expiry.toISOString(),
       name: req.session.idv.name,
-      token: `${token.toString('hex')}|${iv.toString('hex')}`
+      token: `${token.toString('base64')}|${iv.toString('hex')}`
     };
     res.send({
       ...json,

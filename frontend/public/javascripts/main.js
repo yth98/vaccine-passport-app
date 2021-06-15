@@ -96,9 +96,9 @@ const generateQR = function() {
   then((res) => {
     if (res.expiry && res.name && res.signature && res.token) {
       const payload = JSON.stringify({
-          expiry: res.expiry,
-          name: res.name,
-          token: res.token
+        expiry: res.expiry,
+        name: res.name,
+        token: res.token
       });
       verify(payload, window.atob(res.signature)).then((valid) => {
         if (valid) {
@@ -138,7 +138,7 @@ const indexOnLoad = function() {
       qrbox: Math.min(400, scan.clientWidth - 20)
     }, function(text) {
       if (Array.isArray(text.
-        match(/^(?:[0-9a-f]{32})+\|[0-9a-f]{32}$/u))) {
+        match(/^[0-9A-Za-z+/]+={0,2}\|[0-9a-f]{32}$/u))) {
         scanner.stop().then(() => {
           scan.onclick = initScanQR;
           scan.replaceChildren();

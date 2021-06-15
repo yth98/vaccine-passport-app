@@ -24,7 +24,9 @@ router.post('/scan', async function(req, res) {
     const [
       token,
       iv
-    ] = req.body.t.split('|').map((str) => Buffer.from(str, 'hex'));
+    ] = req.body.t.split('|').map((str, idx) =>
+      Buffer.from(str, idx ? 'hex' : 'base64')
+    );
     const aes = crypto.createDecipheriv('aes-256-cbc', key, iv);
     const payload = JSON.parse(`${aes.update(token)}${aes.final()}`);
     ok(new Date() < new Date(payload.expiry) && payload.id && payload.name);
