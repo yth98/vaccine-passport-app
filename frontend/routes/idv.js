@@ -1,4 +1,5 @@
 var axios = require('axios');
+var crypto = require('crypto');
 var express = require('express');
 var router = express.Router();
 
@@ -22,6 +23,7 @@ router.get('/query', async function(req, res, next) {
       Array.isArray(userData.data?.data?.Injection)) {
       res.render('list', {
         data: userData.data.data.Injection,
+        individual: true,
         title: `Injection records of <strong>${req.session.idv.name}</strong>`
       });
     } else {
@@ -51,15 +53,24 @@ router.put('/gen-qr', function(req, res) {
       ...req.session.idv,
       expiry: expiry.toISOString()
     });
+    const key = crypto.scryptSync(
+      process.env.TOKEN_PWD || 'Vaccine',
+      process.env.TOKEN_SALT || 'Sugar',
+      32
+    );
+    const iv = crypto.randomBytes(16);
+    const aes = crypto.createCipheriv('aes-256-cbc', key, iv);
+    const token = Buffer.concat([
+      aes.update(payload),
+      aes.final()
+    ]);
     res.send({
       expiry: expiry.toISOString(),
       name: req.session.idv.name,
-      token: 'TODO'
+      token: `${token.toString('hex')}|${iv.toString('hex')}`
     });
   } else {
-    res.status(403).send({
-      error: 'unauthorized'
-    });
+    res.status(403).send({ error: 'unauthorized' });
   }
 });
 

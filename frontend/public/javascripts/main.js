@@ -8,10 +8,10 @@ const generateQR = function() {
             const qr = new QRCode('qr', {
                 colorDark: '#000000',
                 colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H,
-                height: 128,
+                correctLevel: QRCode.CorrectLevel.L,
+                height: 384,
                 text: res.token,
-                width: 128
+                width: 384
             });
             document.getElementById('name').innerText = res.name;
             document.getElementById('expiry').innerText =
@@ -40,7 +40,9 @@ const indexOnLoad = function() {
                 scan.onclick = initScanQR;
                 scan.replaceChildren();
                 scan.classList.remove('ratio', 'ratio-1x1');
-                scan.innerText = text;
+                const token = document.getElementById('token');
+                token.setAttribute('value', text);
+                token.parentElement.submit();
             });
         });
     };
