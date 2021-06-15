@@ -1,6 +1,7 @@
 const { ok } = require('assert');
 var axios = require('axios');
 var crypto = require('crypto');
+var { key } = require('../key');
 var express = require('express');
 var router = express.Router();
 var idvRouter = require('./idv');
@@ -24,13 +25,8 @@ router.post('/scan', async function(req, res) {
       token,
       iv
     ] = req.body.t.split('|').map((str) => Buffer.from(str, 'hex'));
-    const key = crypto.scryptSync(
-      process.env.TOKEN_PWD || 'Vaccine',
-      process.env.TOKEN_SALT || 'Sugar',
-      32
-    );
     const aes = crypto.createDecipheriv('aes-256-cbc', key, iv);
-    const payload = JSON.parse(`${aes.update(token, 'hex')}${aes.final()}`);
+    const payload = JSON.parse(`${aes.update(token)}${aes.final()}`);
     ok(new Date() < new Date(payload.expiry) && payload.id && payload.name);
     res.render('list', {
       data: (await axios.get('http://localhost:8080/userData', {

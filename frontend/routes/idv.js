@@ -1,6 +1,6 @@
 var axios = require('axios');
 var crypto = require('crypto');
-var { privPEM } = require('../key');
+var { key, privPEM } = require('../key');
 var express = require('express');
 var router = express.Router();
 
@@ -46,12 +46,6 @@ router.get('/gen-qr', function(req, res) {
     res.redirect('/idv/login');
   }
 });
-
-const key = crypto.scryptSync(
-  process.env.TOKEN_PWD || 'Vaccine',
-  process.env.TOKEN_SALT || 'Sugar',
-  32
-);
 
 const signRSA = function(text) {
   const sign = crypto.createSign('SHA256');

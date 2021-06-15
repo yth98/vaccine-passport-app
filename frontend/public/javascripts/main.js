@@ -171,9 +171,9 @@ const medInit = async function() {
     headers: { 'content-type': 'application/json' },
     method: 'POST'
   }).
-  then((res) => res.json()).
+  then((res) => res.text()).
   then((res) => {
-    if (res.data === 'Success') {
+    if (res === 'Success') {
       msg.innerText = 'Accept!';
       window.localStorage.setItem(fid, key.priv);
       const aa = document.createElement('a');
@@ -200,9 +200,10 @@ const createOnSubmit = function() {
     'id',
     'vaccine_name',
     'date',
-    'doctor_name',
     'duration',
-    'count'
+    'count',
+    'doctor_name',
+    'hospital_name'
   ].forEach((key) => {
     obj[key] = form.querySelector(`input[name="${key}"]`).value;
   });

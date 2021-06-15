@@ -1,4 +1,11 @@
-module.exports = { privPEM: `-----BEGIN RSA PRIVATE KEY-----
+var crypto = require('crypto');
+
+module.exports = { key: crypto.scryptSync(
+      process.env.TOKEN_PWD || 'Vaccine',
+      process.env.TOKEN_SALT || 'Sugar',
+      32
+    ),
+    privPEM: `-----BEGIN RSA PRIVATE KEY-----
 MIIEogIBAAKCAQEAxUkZZjhAX233DJE1jgs6AeUJT45JGbWAtEmqKWfnymVAyLHP
 JdKem/cYqy6yvJmA2z+mYDwcQzgXLqHDeBcjEBgDbW4kjZcji+jIsvYTSC+XDIj0
 WAs/H6MnujSk9/WqbB6+CWgqPTqvl/jnDUPY2yB04s7Rpy0uTBv8HnpWARGxsCuV
