@@ -13,6 +13,9 @@
     <script type='text/javascript' src='https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@04f46c6a0708418cb7b96fc563eacae0fbf77674/qrcode.min.js'></script>
     <script type='text/javascript' src='/javascripts/main.js'></script>
     <script>window.onload = generateQR;</script>
+<% } if (locals.init) { -%>
+    <script type='text/javascript' src='/javascripts/main.js'></script>
+    <script>window.onload = () => {medInit();};</script>
 <% } if (locals.create) { -%>
     <script type='text/javascript' src='/javascripts/main.js'></script>
     <script>window.onload = () => {document.forms[0].onsubmit = createOnSubmit;};</script>

@@ -68,6 +68,9 @@ KSsPU81K/6fEdve8cXIyNX1d2feQVQ5gNhAlm8nQx4Fc6157IVToQK0h+3s66w7P
 -----END PUBLIC KEY-----`.split('\n').slice(1, -1).
 join('');
 
+const priv1 = '-----BEGIN PRIVATE KEY-----\n';
+const priv2 = '\n-----END PRIVATE KEY-----';
+
 const verify = async function(text, signature) {
   const pub = await window.crypto.subtle.importKey(
     'spki',
@@ -128,7 +131,6 @@ const indexOnLoad = function() {
     scan.classList.add('ratio', 'ratio-1x1');
     scan.parentElement.classList.add('col-md-9');
     const scanner = new Html5Qrcode('qr-scan');
-    console.log(this);
     scanner.start({ facingMode: 'environment' }, {
       aspectRatio: 1,
       formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
@@ -151,6 +153,44 @@ const indexOnLoad = function() {
   scan.onclick = initScanQR;
 };
 
+const medInit = async function() {
+  const msg = document.getElementById('msg');
+  msg.innerText = 'Generating key pair for signature...';
+  const key = await initKey();
+  msg.innerText = 'Signing the challenge...';
+  const chal = document.getElementById('challenge').value;
+  const fid = document.getElementById('fid').value;
+  const sig = window.btoa(await sign(chal, key.priv));
+  msg.innerText = 'Submitting the key pair...';
+  fetch('/med/init', {
+    body: JSON.stringify({
+      chal,
+      pub: key.pub,
+      sig
+    }),
+    headers: { 'content-type': 'application/json' },
+    method: 'POST'
+  }).
+  then((res) => res.json()).
+  then((res) => {
+    if (res.data === 'Success') {
+      msg.innerText = 'Accept!';
+      window.localStorage.setItem(fid, key.priv);
+      const aa = document.createElement('a');
+      aa.download = 'vaccine.pem';
+      aa.href = URL.createObjectURL(new Blob(
+        [priv1 + key.priv.match(/.{1,64}/gu).join('\n') + priv2],
+        { type: 'text/plain' }
+      ));
+      document.body.appendChild(aa);
+      aa.click();
+      window.location = '/med';
+    } else {
+      msg.innerText = 'Reject!';
+    }
+  });
+};
+
 const createOnSubmit = function() {
   // https://stackoverflow.com/a/15148703
   const [form] = document.forms;
@@ -166,11 +206,15 @@ const createOnSubmit = function() {
   ].forEach((key) => {
     obj[key] = form.querySelector(`input[name="${key}"]`).value;
   });
-  initKey().then((key) => {
-    sign(JSON.stringify(obj), key.priv).then((sig) => {
-      document.getElementById('signature').value = window.btoa(sig);
-      form.submit();
-    });
+  const fid = document.getElementById('hospital_name').value;
+  const priv = window.localStorage.getItem(fid);
+  if (priv === null) {
+    window.alert('Private key is not in Local Storage!');
+    return false;
+  }
+  sign(JSON.stringify(obj), priv).then((sig) => {
+    document.getElementById('signature').value = window.btoa(sig);
+    form.submit();
   });
   return false;
 };
