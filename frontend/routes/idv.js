@@ -1,5 +1,6 @@
 var axios = require('axios');
 var crypto = require('crypto');
+var { privPEM } = require('../key');
 var express = require('express');
 var router = express.Router();
 
@@ -46,6 +47,19 @@ router.get('/gen-qr', function(req, res) {
   }
 });
 
+const key = crypto.scryptSync(
+  process.env.TOKEN_PWD || 'Vaccine',
+  process.env.TOKEN_SALT || 'Sugar',
+  32
+);
+
+const signRSA = function(text) {
+  const sign = crypto.createSign('SHA256');
+  sign.update(text);
+  sign.end();
+  return sign.sign(privPEM);
+};
+
 router.put('/gen-qr', function(req, res) {
   if (req.session.idv) {
     const expiry = new Date();
@@ -54,21 +68,20 @@ router.put('/gen-qr', function(req, res) {
       ...req.session.idv,
       expiry: expiry.toISOString()
     });
-    const key = crypto.scryptSync(
-      process.env.TOKEN_PWD || 'Vaccine',
-      process.env.TOKEN_SALT || 'Sugar',
-      32
-    );
     const iv = crypto.randomBytes(16);
     const aes = crypto.createCipheriv('aes-256-cbc', key, iv);
     const token = Buffer.concat([
       aes.update(payload),
       aes.final()
     ]);
-    res.send({
+    const json = {
       expiry: expiry.toISOString(),
       name: req.session.idv.name,
       token: `${token.toString('hex')}|${iv.toString('hex')}`
+    };
+    res.send({
+      ...json,
+      signature: signRSA(JSON.stringify(json)).toString('base64')
     });
   } else {
     res.status(403).send({ error: 'unauthorized' });
