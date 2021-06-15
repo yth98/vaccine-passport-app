@@ -1,17 +1,59 @@
-const arrayBufferToString = function(buffer) {
-  let str = '';
-  for (let iii = 0; iii < buffer.byteLength; iii += 1) {
-    str += String.fromCharCode(buffer[iii]);
-  }
-  return str;
+// https://developers.google.com/web/updates/2012/06/How-to-convert-ArrayBuffer-to-and-from-String
+const ab2str = function(buffer) {
+  return String.fromCharCode.apply(null, new Uint8Array(buffer));
 };
 
-const stringToArrayBuffer = function(str) {
+const str2ab = function(str) {
   const bytes = new Uint8Array(str.length);
   for (let iii = 0; iii < str.length; iii += 1) {
     bytes[iii] = str.charCodeAt(iii);
   }
   return bytes;
+};
+
+const initKey = async function() {
+  const key = await window.crypto.subtle.generateKey(
+    {
+      hash: { name: 'SHA-256' },
+      modulusLength: 2048,
+      name: 'RSASSA-PKCS1-v1_5',
+      publicExponent: new Uint8Array([
+        0x01,
+        0x00,
+        0x01
+      ])
+    },
+    true, [
+      'sign',
+      'verify'
+    ]
+  );
+  return {
+    priv: window.btoa(ab2str(await window.crypto.subtle.exportKey(
+      'pkcs8',
+      key.privateKey
+    ))),
+    pub: window.btoa(ab2str(await window.crypto.subtle.exportKey(
+      'spki',
+      key.publicKey
+    )))
+  };
+};
+
+const sign = async function(text, privateKey) {
+  const priv = await window.crypto.subtle.importKey(
+    'pkcs8',
+    str2ab(window.atob(privateKey)), {
+      hash: { name: 'SHA-256' },
+      name: 'RSASSA-PKCS1-v1_5'
+    }, false, ['sign']
+  );
+  const signature = await window.crypto.subtle.sign(
+    { name: 'RSASSA-PKCS1-v1_5' },
+    priv,
+    str2ab(text)
+  );
+  return ab2str(signature);
 };
 
 // PKCS #8
@@ -29,7 +71,7 @@ join('');
 const verify = async function(text, signature) {
   const pub = await window.crypto.subtle.importKey(
     'spki',
-    stringToArrayBuffer(window.atob(pubPEM)), {
+    str2ab(window.atob(pubPEM)), {
       hash: { name: 'SHA-256' },
       name: 'RSASSA-PKCS1-v1_5'
     }, false, ['verify']
@@ -37,8 +79,8 @@ const verify = async function(text, signature) {
   const valid = await window.crypto.subtle.verify(
     { name: 'RSASSA-PKCS1-v1_5' },
     pub,
-    stringToArrayBuffer(signature),
-    stringToArrayBuffer(text)
+    str2ab(signature),
+    str2ab(text)
   );
   return valid;
 };
@@ -107,6 +149,30 @@ const indexOnLoad = function() {
     });
   };
   scan.onclick = initScanQR;
+};
+
+const createOnSubmit = function() {
+  // https://stackoverflow.com/a/15148703
+  const [form] = document.forms;
+  const obj = {};
+  [
+    'usr_name',
+    'id',
+    'vaccine_name',
+    'date',
+    'doctor_name',
+    'duration',
+    'count'
+  ].forEach((key) => {
+    obj[key] = form.querySelector(`input[name="${key}"]`).value;
+  });
+  initKey().then((key) => {
+    sign(JSON.stringify(obj), key.priv).then((sig) => {
+      document.getElementById('signature').value = window.btoa(sig);
+      form.submit();
+    });
+  });
+  return false;
 };
 
 /* const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
