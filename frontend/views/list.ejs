@@ -1,42 +1,52 @@
 <!DOCTYPE html>
 <html>
 <%- include('head') %>
-  <body>
-    <div class='container'>
-      <div class='row'>
-        <h1 class='text-center'>Injection records of <strong><%- name %></strong></h1>
-<% data.forEach((entry) => { -%>
-        <div class='col-12 card py-2'>
-          <div class='form-outline'>
-            <input type='text' id='vaccine_name' class='form-control' readonly value='<%= entry.vaccineName %>' />
-            <label class='form-label' for='vaccine_name'>Type of Vaccine</label>
-          </div>
-          <div class='form-outline'>
-            <input type='text' id='date' class='form-control' readonly value='<%= new Date(entry.date).toLocaleString() %>' />
-            <label class='form-label' for='date'>Date of Injection</label>
-          </div>
-          <div class='form-outline'>
-            <input type='number' id='duration' class='form-control' readonly value='<%= entry.duration %>' />
-            <label class='form-label' for='duration'>Duration</label>
-          </div>
-          <div class='form-outline'>
-            <input type='number' id='count' class='form-control' readonly value='<%= entry.count %>' />
-            <label class='form-label' for='count'>Count</label>
-          </div>
-          <div class='form-outline'>
-            <input type='text' id='doctor_name' class='form-control' readonly value='<%= entry.doctorName %>' />
-            <label class='form-label' for='doctor_name'>Name of Medical Personnel</label>
-          </div>
-          <div class='form-outline'>
-            <input type='text' id='hospital_name' class='form-control' readonly value='<%= entry.hospitalName %>' />
-            <label class='form-label' for='hospital_name'>Name of Medical Facility</label>
-          </div>
+
+    <body>
+        <div class='container'>
+            <div class='row'>
+                <h1 class='text-center'>Injection records of <strong>
+            <%- name %>
+          </strong></h1>
+                <% data.forEach((entry)=> { -%>
+                    <div class='col-12 card py-2'>
+                        <div class='form-outline'>
+                            <label class='form-label' for='vaccine_name'>Type of Vaccine</label>
+                            <input type='text' id='vaccine_name' class='form-control' readonly value='<%= entry.vaccineName %>' />
+
+                        </div>
+                        <div class='form-outline'>
+                            <label class='form-label' for='date'>Date of Injection</label>
+                            <input type='text' id='date' class='form-control' readonly value='<%= new Date(entry.date).toLocaleString() %>' />
+
+                        </div>
+                        <div class='form-outline'>
+                            <label class='form-label' for='duration'>Duration</label>
+                            <input type='number' id='duration' class='form-control' readonly value='<%= entry.duration %>' />
+
+                        </div>
+                        <div class='form-outline'>
+                            <label class='form-label' for='count'>Count</label>
+                            <input type='number' id='count' class='form-control' readonly value='<%= entry.count %>' />
+
+                        </div>
+                        <div class='form-outline'>
+                            <label class='form-label' for='doctor_name'>Name of Medical Personnel</label>
+                            <input type='text' id='doctor_name' class='form-control' readonly value='<%= entry.doctorName %>' />
+
+                        </div>
+                        <div class='form-outline'>
+                            <label class='form-label' for='hospital_name'>Name of Medical Facility</label>x
+                            <input type='text' id='hospital_name' class='form-control' readonly value='<%= entry.hospitalName %>' />
+                        </div>
+                    </div>
+                    <% }); -%>
+                        <div class='col-12'>
+                            <a href='<%- (locals.individual ? ' /idv ' : ' / ') %>'><button class='btn btn-dark w-100'>Go
+                  Back</button></a>
+                        </div>
+            </div>
         </div>
-<% }); -%>
-        <div class='col-12'>
-          <a href='<%- (locals.individual ? '/idv' : '/') %>'><button class='btn btn-dark w-100'>Go Back</button></a>
-        </div>
-      </div>
-    </div>
-  </body>
+    </body>
+
 </html>
