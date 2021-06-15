@@ -6,8 +6,8 @@
         <div class='container'>
             <div class='row'>
                 <h1 class='text-center'>Injection records of <strong>
-            <%- name %>
-          </strong></h1>
+                        <%- name %>
+                    </strong></h1>
                 <% data.forEach((entry)=> { -%>
                     <div class='col-12 card py-2'>
                         <div class='form-outline'>
@@ -36,14 +36,15 @@
 
                         </div>
                         <div class='form-outline'>
-                            <label class='form-label' for='hospital_name'>Name of Medical Facility</label>x
+                            <label class='form-label' for='hospital_name'>Name of Medical Facility</label>
                             <input type='text' id='hospital_name' class='form-control' readonly value='<%= entry.hospitalName %>' />
                         </div>
                     </div>
                     <% }); -%>
                         <div class='col-12'>
-                            <a href='<%- (locals.individual ? ' /idv ' : ' / ') %>'><button class='btn btn-dark w-100'>Go
-                  Back</button></a>
+                            <a href='<%- (locals.individual ? ' /idv ' : ' / ') %>'><button
+                                    class='btn btn-dark w-100'>Go
+                                    Back</button></a>
                         </div>
             </div>
         </div>
