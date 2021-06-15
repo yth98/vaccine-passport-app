@@ -9,7 +9,7 @@ router.get('/', function(req, res) {
       title: 'Individual'
     });
   } else {
-    res.redirect(`${req.baseUrl}${req.path}login`);
+    res.redirect('/idv/login');
   }
 });
 
@@ -18,10 +18,11 @@ router.get('/query', async function(req, res, next) {
     const userData = await axios.get('http://localhost:8080/userData', {
       params: req.session.idv
     });
-    if (Array.isArray(userData.data)) {
+    if (userData.data?.msg === 'Success' &&
+      Array.isArray(userData.data?.data?.Injection)) {
       res.render('list', {
-        data: userData.data,
-        title: `Injection records of ${req.session.idv.name}`
+        data: userData.data.data.Injection,
+        title: `Injection records of <strong>${req.session.idv.name}</strong>`
       });
     } else {
       res.redirect(303, '/');
@@ -32,7 +33,34 @@ router.get('/query', async function(req, res, next) {
 });
 
 router.get('/gen-qr', function(req, res) {
-  res.send('TODO');
+  if (req.session.idv) {
+    res.render('qr', {
+      qr: true,
+      title: 'Your QR code'
+    });
+  } else {
+    res.redirect('/idv/login');
+  }
+});
+
+router.put('/gen-qr', function(req, res) {
+  if (req.session.idv) {
+    const expiry = new Date();
+    expiry.setMinutes(expiry.getMinutes() + 5);
+    const payload = JSON.stringify({
+      ...req.session.idv,
+      expiry: expiry.toISOString()
+    });
+    res.send({
+      expiry: expiry.toISOString(),
+      name: req.session.idv.name,
+      token: 'TODO'
+    });
+  } else {
+    res.status(403).send({
+      error: 'unauthorized'
+    });
+  }
 });
 
 router.get('/login', function(req, res) {
@@ -51,14 +79,14 @@ router.post('/login', async function(req, res, next) {
           name: req.body.name
         }
       });
-      if (auth.data === 'Failed') {
+      if (auth.data?.data === 'Failed') {
         res.redirect(303, '.');
       } else {
         req.session.idv = {
           id: req.body.pid,
           name: req.body.name
         };
-        res.redirect(303, `${req.baseUrl}`);
+        res.redirect(303, '/idv');
       }
     } catch (err) {
       next(err);

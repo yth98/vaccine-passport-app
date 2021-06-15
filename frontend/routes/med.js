@@ -9,7 +9,7 @@ router.get('/', function(req, res) {
       title: 'Health facility'
     });
   } else {
-    res.redirect(`${req.baseUrl}${req.path}login`);
+    res.redirect('/med/login');
   }
 });
 
@@ -20,7 +20,7 @@ router.get('/create', function(req, res) {
       title: 'Create Injection Record'
     });
   } else {
-    res.redirect(`${req.baseUrl}/login`);
+    res.redirect('/med/login');
   }
 });
 
@@ -41,16 +41,16 @@ router.post('/create', async function(req, res, next) {
           'hospital_name': req.session.med.hospital_name
         }
       });
-      if (action.data === 'Failed') {
+      if (action.data?.data === 'Failed') {
         res.send('<script>history.back();</script>');
       } else {
-        res.redirect(303, `${req.baseUrl}${req.path}`);
+        res.redirect(303, '/med');
       }
     } catch (err) {
       next(err);
     }
   } else {
-    res.redirect(303, `${req.baseUrl}${req.path}`);
+    res.redirect(303, '/med/create');
   }
 });
 
@@ -70,14 +70,14 @@ router.post('/login', async function(req, res, next) {
           pwd: req.body.pwd
         }
       });
-      if (auth.data === 'Failed') {
+      if (auth.data?.data === 'Failed') {
         res.redirect(303, '.');
       } else {
         req.session.med = {
           'hospital_name': req.body.fid,
           pwd: req.body.pwd
         };
-        res.redirect(303, `${req.baseUrl}`);
+        res.redirect(303, '/med');
       }
     } catch (err) {
       next(err);

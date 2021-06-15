@@ -6,33 +6,36 @@
       <div class='row'>
         <h1 class='text-center'><%- title %></h1>
 <% data.forEach((entry) => { -%>
-          <div class='col-12 card py-2'>
-            <div class='form-outline'>
-              <input type='text' id='vaccine_name' class='form-control' readonly value='<%= entry.vaccine_name %>' />
-              <label class='form-label' for='vaccine_name'>Type of Vaccine</label>
-            </div>
-            <div class='form-outline'>
-              <input type='datetime' id='date' class='form-control' readonly value='<%= entry.date %>' />
-              <label class='form-label' for='date'>Date of Injection</label>
-            </div>
-            <div class='form-outline'>
-              <input type='text' id='duration' class='form-control' readonly value='<%= entry.duration %>' />
-              <label class='form-label' for='duration'>Duration</label>
-            </div>
-            <div class='form-outline'>
-              <input type='text' id='count' class='form-control' readonly value='<%= entry.count %>' />
-              <label class='form-label' for='count'>Count</label>
-            </div>
-            <div class='form-outline'>
-              <input type='text' id='doctor_name' class='form-control' readonly value='<%= entry.doctor_name %>' />
-              <label class='form-label' for='doctor_name'>Name of Medical Personnel</label>
-            </div>
-            <div class='form-outline'>
-              <input type='text' id='hospital_name' class='form-control' readonly value='<%= entry.hospital_name %>' />
-              <label class='form-label' for='hospital_name'>Name of Medical Facility</label>
-            </div>
+        <div class='col-12 card py-2'>
+          <div class='form-outline'>
+            <input type='text' id='vaccine_name' class='form-control' readonly value='<%= entry.vaccineName %>' />
+            <label class='form-label' for='vaccine_name'>Type of Vaccine</label>
           </div>
+          <div class='form-outline'>
+            <input type='datetime' id='date' class='form-control' readonly value='<%= entry.date %>' />
+            <label class='form-label' for='date'>Date of Injection</label>
+          </div>
+          <div class='form-outline'>
+            <input type='text' id='duration' class='form-control' readonly value='<%= entry.duration %>' />
+            <label class='form-label' for='duration'>Duration</label>
+          </div>
+          <div class='form-outline'>
+            <input type='text' id='count' class='form-control' readonly value='<%= entry.count %>' />
+            <label class='form-label' for='count'>Count</label>
+          </div>
+          <div class='form-outline'>
+            <input type='text' id='doctor_name' class='form-control' readonly value='<%= entry.doctorName %>' />
+            <label class='form-label' for='doctor_name'>Name of Medical Personnel</label>
+          </div>
+          <div class='form-outline'>
+            <input type='text' id='hospital_name' class='form-control' readonly value='<%= entry.hospitalName %>' />
+            <label class='form-label' for='hospital_name'>Name of Medical Facility</label>
+          </div>
+        </div>
 <% }); -%>
+        <div class='col-12'>
+          <a href='/idv'><button class='btn btn-dark w-100'>Go Back</button></a>
+        </div>
       </div>
     </div>
   </body>

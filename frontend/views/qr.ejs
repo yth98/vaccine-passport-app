@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<%- include('head') %>
+  <body>
+    <div class='container'>
+      <div class='row'>
+        <h1 class='text-center'><%- title %></h1>
+        <div class='col card'>
+          <div id='qr' class='ratio ratio-1x1 mx-auto my-3' style='max-width:10rem'></div>
+          <p id='name' class='text-center fs-5 mb-1'></p>
+          <p id='expiry' class='text-center fs-5'></p>
+        </div>
+        <div class='col-12 d-grid gap-3'>
+          <a><button class='btn btn-light w-100' onclick='generateQR()'>Refresh</button></a>
+          <a href='/idv'><button class='btn btn-dark w-100'>Go Back</button></a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
