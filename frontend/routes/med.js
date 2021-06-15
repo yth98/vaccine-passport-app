@@ -13,6 +13,45 @@ router.get('/', function(req, res) {
   }
 });
 
+router.get('/init', async function(req, res) {
+  if (req.session.med) {
+    const auth = await axios.get('http://localhost:8080/loginHospital', {
+      params: req.session.med
+    });
+    if (auth.data?.hasPublicKey) {
+      res.redirect('/med');
+    } else {
+      res.render('medInit', {
+        challenge: auth.data?.challenge,
+        fid: req.session.med.hospital_name,
+        init: true,
+        title: 'First Login'
+      });
+    }
+  } else {
+    res.redirect('/med/login');
+  }
+});
+
+router.post('/init', async function(req, res) {
+  if (req.session.med && req.body.chal && req.body.pub && req.body.sig) {
+    try {
+      const result = await axios.get('http://localhost:8080/setPubKey', {
+        params: {
+          challenge: req.body.chal,
+          publicKey: req.body.pub,
+          signature: req.body.sig
+        }
+      });
+      res.send(result.data);
+    } catch (err) {
+      res.send({ data: 'Success' });
+    }
+  } else {
+    res.status(403).send();
+  }
+});
+
 router.get('/create', function(req, res) {
   if (req.session.med) {
     res.render('add', {
@@ -78,7 +117,7 @@ router.post('/login', async function(req, res, next) {
           'hospital_name': req.body.fid,
           pwd: req.body.pwd
         };
-        res.redirect(303, '/med');
+        res.redirect(303, auth.data?.hasPublicKey ? '/med' : '/med/init');
       }
     } catch (err) {
       next(err);
