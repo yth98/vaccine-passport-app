@@ -20,6 +20,36 @@ const generateQR = function() {
     });
 };
 
+const indexOnLoad = function() {
+    const scan = document.getElementById('qr-scan');
+    const initScanQR = function() {
+        scan.onclick = null;
+        scan.replaceChildren();
+        scan.classList.remove('m-2');
+        scan.classList.add('ratio', 'ratio-1x1');
+        scan.parentElement.classList.add('col-md-9');
+        const scanner = new Html5Qrcode('qr-scan');
+        console.log(this);
+        scanner.start({ facingMode: 'environment' }, {
+            aspectRatio: 1,
+            formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+            fps: 8,
+            qrbox: Math.min(400, scan.clientWidth - 20)
+        }, function(text) {
+            scanner.stop().then(() => {
+                scan.onclick = initScanQR;
+                scan.replaceChildren();
+                scan.classList.remove('ratio', 'ratio-1x1');
+                scan.innerText = text;
+            });
+        });
+    };
+    scan.onclick = initScanQR;
+};
+
 if (typeof module !== 'undefined') {
-    module.exports = { generateQR };
+    module.exports = {
+        generateQR,
+        indexOnLoad
+    };
 }
