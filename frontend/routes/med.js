@@ -16,6 +16,7 @@ router.get('/', function(req, res) {
 router.get('/create', function(req, res) {
   if (req.session.med) {
     res.render('add', {
+      create: true,
       fid: req.session.med.hospital_name,
       title: 'Create Injection Record'
     });
