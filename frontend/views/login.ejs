@@ -8,24 +8,24 @@
         <form action='./login' method='POST'>
 <% switch (identity) { case 'idv': -%>
           <div class='form-outline'>
-            <input type='text' id='name' name='name' class='form-control' />
+            <input type='text' id='name' name='name' class='form-control'>
             <label class='form-label' for='name'>Legal Name</label>
           </div>
           <div class='form-outline'>
-            <input type='password' id='pid' name='pid' class='form-control' />
+            <input type='password' id='pid' name='pid' class='form-control'>
             <label class='form-label' for='pid'>Personal ID</label>
           </div>
 <% break; case 'med': -%>
           <div class='form-outline'>
-            <input type='text' id='fid' name='fid' class='form-control' />
+            <input type='text' id='fid' name='fid' class='form-control'>
             <label class='form-label' for='fid'>Facility ID</label>
           </div>
           <div class='form-outline'>
-            <input type='password' id='pwd' name='pwd' class='form-control' />
+            <input type='password' id='pwd' name='pwd' class='form-control'>
             <label class='form-label' for='pwd'>Password</label>
           </div>
 <% break; } -%>
-          <input type='submit' class='btn btn-dark w-100' value='Submit' />
+          <input type='submit' class='btn btn-dark w-100' value='Submit'>
         </form>
         <a href='/'><button class='btn btn-light w-100 mt-3'>Go Back</button></a>
       </div>
