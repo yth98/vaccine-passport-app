@@ -210,7 +210,7 @@ const createOnSubmit = function() {
   const fid = document.getElementById('hospital_name').value;
   const priv = window.localStorage.getItem(fid);
   if (priv === null) {
-    window.alert('Private key is not in Local Storage!');
+    privKeyImport();
     return false;
   }
   sign(JSON.stringify(obj), priv).then((sig) => {
@@ -218,6 +218,30 @@ const createOnSubmit = function() {
     form.submit();
   });
   return false;
+};
+
+const privKeyImport = function() {
+  window.alert('Private key is not in Local Storage!');
+  const input = document.getElementById('private_key');
+  input.onchange = function() {
+    if (this.files[0]) {
+      const reader = new FileReader();
+      reader.readAsText(this.files[0]);
+      reader.onload = function(event) {
+        const pkcs8 = event.target.result.split('\n').
+        filter((line) => line.length && line.indexOf('-') === -1).
+        join('');
+        if (Array.isArray(pkcs8.match(/^[0-9A-Za-z+/]+={0,2}$/gu))) {
+          const fid = document.getElementById('hospital_name').value;
+          window.localStorage.setItem(fid, pkcs8);
+          createOnSubmit();
+        } else {
+          window.alert('Invalid private key!');
+        }
+      };
+    }
+  };
+  input.click();
 };
 
 /* const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
