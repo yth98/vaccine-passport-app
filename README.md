@@ -2,6 +2,8 @@
 Team 4, Computer Network Laboratory, Spring 2021
 * This app should run with the [backend](https://github.com/Shine0417/VaccineSearchApp).
 
+![Workflow](https://i.imgur.com/iK5P1iv.png)
+
 ## Client
 * Web Crypto API: `window.crypto.subtle`
 * QR Code generator: [`davidshimjs/qrcodejs`](https://github.com/davidshimjs/qrcodejs)
