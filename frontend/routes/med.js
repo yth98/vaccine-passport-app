@@ -108,7 +108,7 @@ router.post('/create', async function(req, res, next) {
     'doctor_name',
     'duration',
     'count'
-  ].every((key) => key in req.body)) {
+  ].every((JSONkey) => JSONkey in req.body)) {
     try {
       const action = await axios.get('http://localhost:8080/addEntry', {
         params: {

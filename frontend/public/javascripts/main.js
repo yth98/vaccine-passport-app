@@ -244,21 +244,10 @@ const privKeyImport = function() {
   input.click();
 };
 
-/* const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-    modulusLength: 2048
-});
-let a = privateKey.export({
-  format: 'pem',
-  type: 'pkcs1'
-});
-let b = publicKey.export({
-  format: 'pem',
-  type: 'pkcs1'
-}); */
-
 if (typeof module !== 'undefined') {
   module.exports = {
     generateQR,
-    indexOnLoad
+    indexOnLoad,
+    medInit
   };
 }
