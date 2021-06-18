@@ -15,8 +15,11 @@ router.get('/', function(req, res) {
   }
 });
 
-router.get('/query', async function(req, res, next) {
+router.get('/query', async function(req, res) {
   try {
+    if (!req.session.idv) {
+      throw Error('unauthorized');
+    }
     const userData = await axios.get('http://localhost:8080/userData', {
       params: req.session.idv
     });
@@ -29,10 +32,10 @@ router.get('/query', async function(req, res, next) {
         title: `Injection records of ${req.session.idv.name}`
       });
     } else {
-      res.redirect(303, '/');
+      res.redirect('/idv');
     }
   } catch (err) {
-    next(err);
+    res.redirect('/idv/login');
   }
 });
 
